@@ -27,4 +27,4 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -Dregistry=https://maven.pkg.github.com/bobdamit/jpa-util -Dusername=${{ github.actor }} -Dpassword=${{ secrets.DEPLOY_PAT }}
+      run: mvn deploy -Dregistry=https://maven.pkg.github.com/bobdamit/jpa-util -Dusername=bobdamit -Dpassword=${{ secrets.DEPLOY_PAT }}
