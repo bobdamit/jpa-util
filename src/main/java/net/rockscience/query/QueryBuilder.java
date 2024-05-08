@@ -1,4 +1,4 @@
-package com.rockscience.query;
+package net.rockscience.query;
 
 import java.util.HashMap;
 import java.util.Map;

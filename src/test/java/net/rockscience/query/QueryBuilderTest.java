@@ -1,4 +1,4 @@
-package com.rockscience.query;
+package net.rockscience.query;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
