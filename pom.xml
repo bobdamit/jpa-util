@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -9,14 +8,15 @@
 	<version>1.0.0</version>
 
 	<name>jpautil</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://gofish.xyz</url>
+	<url>https://rockscience.net</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+		<hypersistence-tsid.version>2.1.1</hypersistence-tsid.version>
 	</properties>
+
 
 	<distributionManagement>
 		<repository>
@@ -24,7 +24,7 @@
 			<name>GitHub bobdamit Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/bobdamit/jpa-util</url>
 		</repository>
-	</distributionManagement>	
+	</distributionManagement>
 
 	<dependencies>
 
@@ -39,6 +39,12 @@
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>
 			<version>3.2.0-M2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-tsid</artifactId>
+			<version>${hypersistence-tsid.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
