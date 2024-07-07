@@ -145,6 +145,21 @@ public class QueryBuilder {
 		}
 	}
 
+	/**
+	 * make a value suitable for use in a LIKE query. 
+	 * Replace any * with %.
+	 * Add an % to the end of the string if not already
+	 * @param s
+	 * @return
+	 */
+	public static String likeString(String s) {
+		s = RegExUtils.replaceAll(s, "\\*", "%");
+		if(!StringUtils.endsWith(s, "%")) {
+			s = s + "%";
+		}
+		return s;
+	}
+
 	public <T> TypedQuery<T> getQuery(EntityManager entityManager, Class<T> clazz) throws Exception {
 		TypedQuery<T> q = entityManager.createQuery(this.toHqlString(), clazz);
 		addParams(q);

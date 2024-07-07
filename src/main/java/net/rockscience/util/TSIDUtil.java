@@ -1,5 +1,7 @@
 package net.rockscience.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.hypersistence.tsid.TSID;
 
 public class TSIDUtil {
@@ -35,5 +37,13 @@ public class TSIDUtil {
 			  .withNodeBits(nodeBits)
 			  .withNode(nodeId)
 			  .build();
+	}
+
+	public static Long toLong(String stringId) {
+		return StringUtils.isEmpty(stringId) ? null : TSID.from(stringId).toLong();
+	}
+
+	public static String idToString(Long id) {
+		return id == null ? null : TSID.from(id).toString();
 	}
 }

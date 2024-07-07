@@ -50,5 +50,11 @@ public class QueryBuilderTest {
 		assertEquals("select t from TicketEntity t where t.id = :P0", hql);
 	}
 	
+	@Test
+	void testLike() {
+		String s = "*ooBarDoo";
+		s = QueryBuilder.likeString(s);
+		assertEquals("%ooBarDoo%", s);
+	}
 
 }
