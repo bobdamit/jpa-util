@@ -35,7 +35,7 @@ public class TSIDUtil {
 	}
 
 	public static TSID fromString(String stringId) {
-		return stringId == null ? null : TSID.from(stringId);
+		return StringUtils.isEmpty(stringId) ? null : TSID.from(stringId);
 	}
 
 	private static TSID.Factory getTsidFactory(int nodeCount) {
