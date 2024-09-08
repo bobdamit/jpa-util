@@ -153,6 +153,9 @@ public class QueryBuilder {
 	 * @return
 	 */
 	public static String likeString(String s) {
+		if(s == null) {
+			return null;
+		}
 		s = RegExUtils.replaceAll(s, "\\*", "%");
 		if(!StringUtils.endsWith(s, "%")) {
 			s = s + "%";
