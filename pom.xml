@@ -20,7 +20,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>github-rs</id>
+			<id>github</id>
 			<name>GitHub bobdamit Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/bobdamit/jpa-util</url>
 		</repository>
