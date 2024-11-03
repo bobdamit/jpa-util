@@ -12,7 +12,7 @@ QueryBuilder qb = new QueryBuilder()
 	.withQL("join fetch sol.ruleSet as rs")
 	.withAndedConditionAndParamToken("rs.org=:$", oe);
 
-	List<SolutionResultEntity> sres = qb.getQuery(entityManager, SolutionResultEntity.class).getResultList();
+List<SolutionResultEntity> sres = qb.getQuery(entityManager, SolutionResultEntity.class).getResultList();
 
 ```
 
