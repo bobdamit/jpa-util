@@ -22,6 +22,7 @@ public class QueryBuilder {
 	private Map<String, Object> params = new HashMap<>();
 	private int paramSerial = 0;
 	private String paramKeyPrefix = "P";
+	private boolean forJoin;
 
 	/**
 	 * Package Protected getter for test
@@ -33,6 +34,16 @@ public class QueryBuilder {
 
 	public String toHqlString() {
 		return hql.toString();
+	}
+
+	/**
+	 * Builder to use this instance as a Join Sub-query
+	 * @return
+	 */
+	public QueryBuilder forJoin() {
+		forJoin = true;
+		paramKeyPrefix="J";
+		return this;
 	}
 	
 	/**
@@ -101,6 +112,16 @@ public class QueryBuilder {
 		// null param value is no-op
 		return this;
 	}
+
+	/**
+	 * Add an ORDER BY clause to the query
+	 * @param sortClause
+	 * @return
+	 */
+	public QueryBuilder withSortOrder(String sortClause) {
+		hql.append(" ORDER BY ").append(sortClause);
+		return this;
+	}
 	
 
 	/**
@@ -124,7 +145,8 @@ public class QueryBuilder {
 	}
 	
 	/**
-	 * Append a WHERE clause or an AND conjunction depending on if any params have been added yet
+	 * Append a WHERE/WITH clause or an AND conjunction depending on if any params have been added yet
+	 * For Joins, append WITH otherwise WHERE
 	 * @param sb
 	 */
 	private void appendAndOrWhere() {
@@ -132,18 +154,15 @@ public class QueryBuilder {
 			hql.append(" and ");
 		}
 		else {
-			hql.append(" where ");
+			if(forJoin) {
+				hql.append(" with ");
+			}
+			else {
+				hql.append(" where ");
+			}
 		}
 	}
 	
-	public void appendAndOrWith() {
-		if (!params.isEmpty()) {
-			hql.append(" and ");
-		}
-		else {
-			hql.append(" with ");
-		}
-	}
 
 	/**
 	 * make a value suitable for use in a LIKE query. 
