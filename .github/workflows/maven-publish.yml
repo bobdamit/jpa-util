@@ -31,7 +31,7 @@ jobs:
         # Put the Actor(user) and password (token) into standard env variables. 
         # the generated settings.xml file is resolving these for the creds
         GITHUB_ACTOR: ${{ github.actor }}
-        GITHUB_TOKEN: ${{ secrets.GH_PKG_PAT }}
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_PAT }}
 
     - name: Echo settings.xml
       run: |
