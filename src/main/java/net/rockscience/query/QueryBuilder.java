@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -17,6 +20,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class QueryBuilder {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueryBuilder.class);
+
 	@Getter
 	private StringBuilder hql = new StringBuilder();
 	private Map<String, Object> params = new HashMap<>();
@@ -53,7 +59,7 @@ public class QueryBuilder {
 	 * @return this object
 	 */
 	public QueryBuilder withQL(String ql) {
-		if(!StringUtils.isEmpty(hql) && !StringUtils.endsWith(hql, " ") && !StringUtils.startsWith(ql, " ")) {
+		if(!StringUtils.isEmpty(hql) && !Strings.CS.endsWith(hql, " ") && !Strings.CS.startsWith(ql, " ")) {
 			hql.append(" ");
 		}
 		hql.append(ql);
@@ -106,10 +112,11 @@ public class QueryBuilder {
 		if(paramValue != null) {
 			String key = nextParamKey();
 			condition = RegExUtils.replaceAll(condition, ":\\$", ":" + key);
+			LOGGER.debug("Added condition: {} with param {}: {}", condition, key, paramValue);
 			return withAndedCondition(condition)
 					.withNamedParam(key, paramValue);
 		}
-		// null param value is no-op
+		LOGGER.debug("Skipped condition due to null param: {}", condition);
 		return this;
 	}
 
@@ -176,14 +183,16 @@ public class QueryBuilder {
 			return null;
 		}
 		s = RegExUtils.replaceAll(s, "\\*", "%");
-		if(!StringUtils.endsWith(s, "%")) {
+		if(!Strings.CS.endsWith(s, "%")) {
 			s = s + "%";
 		}
 		return s;
 	}
 
 	public <T> TypedQuery<T> getQuery(EntityManager entityManager, Class<T> clazz) throws Exception {
-		TypedQuery<T> q = entityManager.createQuery(this.toHqlString(), clazz);
+		String hqlString = this.toHqlString();
+		LOGGER.debug("Creating query: {} with {} parameters", hqlString, params.size());
+		TypedQuery<T> q = entityManager.createQuery(hqlString, clazz);
 		addParams(q);
 		return q;
 	}
@@ -199,8 +208,10 @@ public class QueryBuilder {
 				Object o = params.get(key);
 				query.setParameter(key, o);
 			}
+			LOGGER.debug("Set {} query parameters", params.size());
 		}
 		catch(Exception e) {
+			LOGGER.error("Failed to set query parameters: {}", e.getMessage());
 			throw e;
 		}
 	}

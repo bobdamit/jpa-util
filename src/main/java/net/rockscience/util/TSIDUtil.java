@@ -1,14 +1,18 @@
 package net.rockscience.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.hypersistence.tsid.TSID;
 
 public class TSIDUtil {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TSIDUtil.class);
 	public static TSID.Factory TSID_FACTORY;
  
 	static {
 		 TSID_FACTORY = getTsidFactory(2);
+		 LOGGER.debug("Initialized TSID factory with node count: 2");
 	}
 
 	private TSIDUtil() {
@@ -19,7 +23,15 @@ public class TSIDUtil {
 	}
 
 	public static Long toLong(String stringId) {
-		return StringUtils.isEmpty(stringId) ? null : TSID.from(stringId).toLong();
+		if (StringUtils.isEmpty(stringId)) {
+			return null;
+		}
+		try {
+			return TSID.from(stringId).toLong();
+		} catch (Exception e) {
+			LOGGER.error("Failed to convert string to TSID: {}", stringId, e);
+			throw e;
+		}
 	}
 
 	public static String idToString(Long id) {
@@ -35,7 +47,15 @@ public class TSIDUtil {
 	}
 
 	public static TSID fromString(String stringId) {
-		return StringUtils.isEmpty(stringId) ? null : TSID.from(stringId);
+		if (StringUtils.isEmpty(stringId)) {
+			return null;
+		}
+		try {
+			return TSID.from(stringId);
+		} catch (Exception e) {
+			LOGGER.error("Failed to parse TSID from string: {}", stringId, e);
+			throw e;
+		}
 	}
 
 	private static TSID.Factory getTsidFactory(int nodeCount) {
@@ -48,16 +68,5 @@ public class TSIDUtil {
 			  .withNodeBits(nodeBits)
 			  .build();
 	}
-
-	private static TSID.Factory getTsidFactory(int nodeCount, int nodeId) {
-		 int nodeBits = (int) (Math.log(nodeCount) / Math.log(2));
-
-		 return TSID.Factory.builder()
-			  .withRandomFunction(TSID.Factory.THREAD_LOCAL_RANDOM_FUNCTION)
-			  .withNodeBits(nodeBits)
-			  .withNode(nodeId)
-			  .build();
-	}
-
 
 }
